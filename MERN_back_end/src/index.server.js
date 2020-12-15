@@ -5,7 +5,9 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 //routes
-const userRoutes = require('./routes/user');
+const authRoutes = require('./routes/auth');
+const adminRoutes = require('./routes/admin/auth');
+
 
 //environment variable or can say constants
 env.config();
@@ -17,7 +19,9 @@ mongoose.connect(
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        useCreateIndex: true
+        useCreateIndex: true,
+        //useFindAndModify: false
+
     }
 ).then(()=>{
     console.log('Database connected');
@@ -26,7 +30,8 @@ mongoose.connect(
 
 //app.use(express.json());
 app.use(bodyParser());
-app.use('/api',userRoutes);
+app.use('/api',authRoutes);
+app.use('/api',adminRoutes);
 
 
 

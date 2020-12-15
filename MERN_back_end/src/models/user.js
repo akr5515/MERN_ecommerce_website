@@ -51,13 +51,19 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 });
 
-userSchema.virtual('password')
-.set(function(password){
-    this.hash_password = bcrypt.hashSync(password, 10);
+
+userSchema.virtual('fullname')
+.get(function(){
+    return `${this.firstname} ${this.lastname}`;
 })
 
+userSchema.methods={
+    authenticate: async function(password){
+        return await bcrypt.compareSync(password,this.hash_password);
+    }
+}
 userSchema.methods ={
-    authenticate: function(){
+    authenticate: function(password){
         return bcrypt.compareSync(password, this.hash_password);
     }
 }
